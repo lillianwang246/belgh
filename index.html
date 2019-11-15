@@ -13,10 +13,23 @@
 <a-marker type="pattern" preset="custom" url="finaldollar.patt">
 
 <a-cylinder src="https://cdn.glitch.com/94af24d8-68b0-410d-a791-66739ab93fab%2FTexturesCom_FoodVarious0005_1_M.jpg?v=1568666727143"
-            position= "0 0.5 0" material= "color: #F587FC" height=".25" radius=".5" rotation="0 0 0"></a-cylinder>
+            position= "0 0.5 0" material= "color: #F587FC" height=".25" radius=".5" rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-cylinder>
+<a-text value="Salmon sashimi $15.99" position="-1 0 -1" color="#EFEAFF" rotation="-45 0 0"></a-text>
 
-<a-text value="salmon sashimi $15.99" position="-0.5 0 -1" color="#EFEAFF" rotation="-45 0 0"></a-text>
+<a-dodecahedron src="soda.jpg" position= "2.5 0.5 0" radius="0.5" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-dodecahedron>
+<a-text value="Cola $4.99" position="2 0 -1" color="#EFEAFF" rotation="-45 0 0"></a-text>
 
+<a-cone src="strawberry.jpg" position= "-2.5 0.5 0" radius-bottom="0.5" radius-top="0" rotation="45 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-cone>
+<a-text value="Fresh Strawberries $4.99" position="-3.5 0 -1" color="#EFEAFF" rotation="-45 0 0"></a-text>
+
+<a-cylinder src="salad.jpg" position= "0 0.5 -2"  height=".25" radius=".5" rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-cylinder>
+<a-text value="Healthy Salad $12.99" position="-1 0 -3" color="#EFEAFF" rotation="-45 0 0"></a-text>
+
+<!-- <a-ring src="donut.jpg" position= "-1 0.5 -2" radius-inner="0.5" radius-outer="1.5" ></a-ring> -->
+<a-torus src="donut.jpg" position= "-2 0.5 -2" arc="360" radius="0.4" radius-tubular="0.09" rotation="90 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-torus>
+<a-text value="Donut $4.99" position="-2.5 0 -3" color="#EFEAFF" rotation="-45 0 0"></a-text>
+
+<a-dodecahedron src="coffee.jpg" position= "2.5 0.5 2" radius="0.5" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-dodecahedron>
 </a-marker>
 
 <a-entity camera></a-entity>
