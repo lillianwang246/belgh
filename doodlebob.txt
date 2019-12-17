@@ -1,0 +1,208 @@
+#include "pitches.h"
+#include "Arduino.h"
+ 
+#if defined(ARDUINO_ARCH_SAMD) || defined(__SAM3X8E__)
+  // use pin 18 with Due, pin 1 with Zero or M0 Pro
+  #define lcd Serial1
+#else
+  #include <SoftwareSerial.h>
+  // Create a software serial port!
+  SoftwareSerial lcd = SoftwareSerial(0,2);
+#endif
+
+int solo[] = {  NOTE_DS5, NOTE_C5,NOTE_DS5,NOTE_C6,NOTE_FS5,0};
+
+int soloDurations[] = {
+4, 4, 4, 8, 6, 4 };
+
+int riff[] = {
+NOTE_F2, NOTE_F2, NOTE_G2, NOTE_F2, NOTE_GS2, NOTE_F2, NOTE_AS2, NOTE_A2
+};
+
+// note durations: 4 = quarter note, 8 = eighth note, etc.:
+int riffDurations[] = {
+4, 4, 4, 4, 4, 4, 4, 4
+};
+
+float transpose[] = {0.5,1.0,2,1.4};
+
+int MAX_COUNT = sizeof(riff) / 2;
+
+
+//Arduino pin numbers
+const int SW_pin = 2; //digital pin connected to switch output
+const int X_pin = 0; //analog pin connected to x output
+const int Y_pin = 1; //analog pin connected to y output
+const int speakPin = 5;    // new position for speaker
+
+
+int Xpin = 0;        
+int Ypin = 0;        
+
+void setup() {
+  pinMode(SW_pin, INPUT);
+  pinMode(speakPin, OUTPUT);
+  digitalWrite(SW_pin, HIGH);
+  Serial.begin(115200);
+
+  lcd.begin(9600);  
+ 
+  // set the size of the display if it isn't 16x2 (you only have to do this once)
+  lcd.write(0xFE);
+  lcd.write(0xD1);
+  lcd.write(16);  // 16 columns
+  lcd.write(2);   // 2 rows
+  delay(10);      
+  // we suggest putting delays after each command to make sure the data
+  // is sent and the LCD is updated.
+ 
+  // set the contrast, 200 is a good place to start, adjust as desired
+  lcd.write(0xFE);
+  lcd.write(0x50);
+  lcd.write(200);
+  delay(10);      
+ 
+  // set the brightness - we'll max it (255 is max brightness)
+  lcd.write(0xFE);
+  lcd.write(0x99);
+  lcd.write(255);
+  delay(10);      
+ 
+  // turn off cursors
+  lcd.write(0xFE);
+  lcd.write(0x4B);
+  lcd.write(0xFE);
+  lcd.write(0x54);
+ 
+  // create a custom character
+  lcd.write(0xFE);
+  lcd.write(0x4E);
+  lcd.write((uint8_t)0);     // location #0
+  lcd.write((uint8_t)0x00);  // 8 bytes of character data
+  lcd.write(0x0A);
+  lcd.write(0x15);
+  lcd.write(0x11);
+  lcd.write(0x11);
+  lcd.write(0x0A);
+  lcd.write(0x04);
+  lcd.write((uint8_t)0x00);
+  delay(10);   // we suggest putting delays after each command
+ 
+  // clear screen
+  lcd.write(0xFE);
+  lcd.write(0x58);
+  delay(10);   // we suggest putting delays after each command
+ 
+  // go 'home'
+  lcd.write(0xFE);
+  lcd.write(0x48);
+  delay(10);   // we suggest putting delays after each command
+ 
+  lcd.print("Doodle ");
+  lcd.write((uint8_t)0);            // to print the custom character, 'write' the location
+  lcd.println(" Bob!");
+  lcd.print("     - Resistors");
+ 
+  delay(800);
+}
+
+
+uint8_t red, green, blue;
+void loop () {
+  Xpin = analogRead(X_pin);
+  Ypin = analogRead(Y_pin);
+
+  Serial.print("Switch:  ");
+  Serial.print(digitalRead(SW_pin));
+  Serial.print("\n");
+  Serial.print("X-axis: ");
+  Serial.print(analogRead(X_pin));
+  Serial.print("\n");
+  Serial.print("Y-axis: ");
+  Serial.println(analogRead(Y_pin));
+  Serial.print("\n\n");
+  delay(500);
+  
+   if (Xpin > 600){
+  int whicht = int(random(4));
+  for (int thisNote = 0; thisNote < 6; thisNote++) {
+
+    int noteDuration = 1000 / soloDurations[thisNote];
+    tone(speakPin, solo[thisNote] );
+    }
+  }  else{
+    noTone(speakPin);
+  }
+  
+
+    if (Ypin > 600){
+  int whicht = int(random(4));
+  for (int thisNote = 0; thisNote < 6; thisNote++) {
+
+    int noteDuration = 1000 / soloDurations[thisNote];
+    tone(speakPin, solo[thisNote] );
+    }  
+    } else{
+      noTone(speakPin);
+      }
+
+  if ((Xpin > 1000) && (Ypin > 1000)){
+//    for (red = 0; red < 255; red++) {
+//     lcd.write(0xFE);
+//     lcd.write(0xD0);
+     lcd.write(red);
+//     lcd.writ e((uint8_t)0);
+//     lcd.write(255 - red);
+//     delay(10);  // give it some time to adjust the backlight!
+//    }
+  }
+//  }else{
+//     for (green = 0; green < 255; green++) {
+//      lcd.write(0xFE);
+//      lcd.write(0xD0);
+//      lcd.write(255-green);
+//      lcd.write(green);
+//      lcd.write((uint8_t)0);
+//      delay(10);  // give it some time to adjust the backlight!
+// }  
+// 
+//      for (blue = 0; blue < 255; blue++) {
+//      lcd.write(0xFE);
+//      lcd.write(0xD0);
+//      lcd.write((uint8_t)0);
+//      lcd.write(255-blue);
+//      lcd.write(blue);
+//      delay(10);  // give it some time to adjust the backlight!
+//    }
+//    
+//  }
+// for (red = 0; red < 255; red++) {
+//  lcd.write(0xFE);
+//  lcd.write(0xD0);
+//  lcd.write(red);
+//  lcd.write((uint8_t)0);
+//  lcd.write(255 - red);
+//  delay(10);  // give it some time to adjust the backlight!
+// }  
+// 
+// for (green = 0; green < 255; green++) {
+//  lcd.write(0xFE);
+//  lcd.write(0xD0);
+//  lcd.write(255-green);
+//  lcd.write(green);
+//  lcd.write((uint8_t)0);
+//  delay(10);  // give it some time to adjust the backlight!
+// }  
+// 
+// for (blue = 0; blue < 255; blue++) {
+//  lcd.write(0xFE);
+//  lcd.write(0xD0);
+//  lcd.write((uint8_t)0);
+//  lcd.write(255-blue);
+//  lcd.write(blue);
+//  delay(10);  // give it some time to adjust the backlight!
+// }
+
+}
+
+
